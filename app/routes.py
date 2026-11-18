@@ -1,9 +1,40 @@
 """Camada de apresentação: rotas e telas usadas pelos voluntários."""
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, session, url_for
 
-from app.services import ValidacaoErro, entrega_service, familia_service
+from app.services import ValidacaoErro, auth_service, entrega_service, familia_service
 
 bp = Blueprint("main", __name__)
+
+ROTAS_PUBLICAS = {"main.login"}
+
+
+# RNF01 - toda rota do sistema exige voluntário autenticado (verificado no servidor)
+@bp.before_request
+def exigir_login():
+    if request.endpoint not in ROTAS_PUBLICAS and "id_voluntario" not in session:
+        return redirect(url_for("main.login"))
+
+
+@bp.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        try:
+            voluntario = auth_service.autenticar(request.form.get("email"), request.form.get("senha"))
+            session.clear()  # evita reaproveitar uma sessão anterior
+            session.permanent = True
+            session["id_voluntario"] = voluntario["id_voluntario"]
+            session["nome_voluntario"] = voluntario["nome"]
+            return redirect(url_for("main.index"))
+        except ValidacaoErro as erro:
+            flash(str(erro), "erro")
+    return render_template("login.html")
+
+
+@bp.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    flash("Você saiu do sistema.", "sucesso")
+    return redirect(url_for("main.login"))
 
 
 @bp.route("/")

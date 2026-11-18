@@ -10,6 +10,12 @@
   <header>
     <h1><a href="{{ url_for('main.index') }}">Gestão de Cestas Básicas</a></h1>
     <p>Programa Mãos Abertas — Remar Brasil</p>
+    {% if session.get('id_voluntario') %}
+    <form method="post" action="{{ url_for('main.logout') }}" class="sair">
+      <span>Olá, {{ session.get('nome_voluntario') }}</span>
+      <button type="submit">Sair</button>
+    </form>
+    {% endif %}
   </header>
   <main>
     {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
