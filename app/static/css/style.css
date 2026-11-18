@@ -50,3 +50,62 @@ th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #ddd; }
 
 .sair { margin-top: 0.5rem; display: flex; gap: 0.75rem; align-items: center; }
 .sair button { background: #fff; color: #2f6b3a; border: none; border-radius: 6px; padding: 0.3rem 0.8rem; cursor: pointer; }
+
+/* ---------- Acessibilidade ---------- */
+
+/* Link "Pular para o conteúdo": aparece ao navegar pelo teclado (Tab) */
+.pular-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #ffd400;
+  color: #000;
+  padding: 0.6rem 1rem;
+  font-weight: bold;
+  z-index: 10;
+}
+.pular-link:focus { left: 0.5rem; top: 0.5rem; }
+
+/* Foco sempre visível para quem navega pelo teclado */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid #ffd400;
+  outline-offset: 2px;
+}
+
+.barra-acessibilidade {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: #1f4a27;
+}
+.barra-acessibilidade button {
+  background: #fff;
+  color: #1f4a27;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.barra-acessibilidade button[aria-pressed="true"] {
+  background: #ffd400;
+  border-color: #ffd400;
+  color: #000;
+  font-weight: bold;
+}
+
+/* Fonte ampliada (A+) */
+html.fonte-grande body { font-size: 24px; }
+html.fonte-grande .botao, html.fonte-grande .formulario input { font-size: 1.2rem; }
+
+/* Alto contraste: fundo preto, texto branco e destaques em amarelo */
+html.alto-contraste body { background: #000; color: #fff; }
+html.alto-contraste header, html.alto-contraste .barra-acessibilidade { background: #000; border-bottom: 2px solid #ffd400; }
+html.alto-contraste a { color: #ffd400; }
+html.alto-contraste .botao { background: #ffd400; color: #000; border: 2px solid #fff; }
+html.alto-contraste table { background: #000; }
+html.alto-contraste th, html.alto-contraste td { border-color: #fff; }
+html.alto-contraste input, html.alto-contraste textarea { background: #000; color: #fff; border: 2px solid #fff; }
+html.alto-contraste .alerta-sucesso { background: #000; color: #7CFC00; border: 2px solid #7CFC00; }
+html.alto-contraste .alerta-erro { background: #000; color: #ff6b6b; border: 2px solid #ff6b6b; }
