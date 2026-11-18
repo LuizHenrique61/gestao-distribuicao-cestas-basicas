@@ -5,7 +5,7 @@ from app.services import ValidacaoErro, auth_service, entrega_service, familia_s
 
 bp = Blueprint("main", __name__)
 
-ROTAS_PUBLICAS = {"main.login"}
+ROTAS_PUBLICAS = {"main.login", "main.saude"}
 
 
 # RNF01 - toda rota do sistema exige voluntário autenticado (verificado no servidor)
@@ -13,6 +13,16 @@ ROTAS_PUBLICAS = {"main.login"}
 def exigir_login():
     if request.endpoint not in ROTAS_PUBLICAS and "id_voluntario" not in session:
         return redirect(url_for("main.login"))
+
+
+# Monitoramento: verifica se a aplicação e o banco respondem
+@bp.route("/saude")
+def saude():
+    try:
+        entrega_service.quantidade_em_estoque()
+        return {"status": "ok", "banco": "ok"}, 200
+    except Exception:
+        return {"status": "erro", "banco": "indisponivel"}, 503
 
 
 @bp.route("/login", methods=["GET", "POST"])
