@@ -52,6 +52,7 @@ Detalhes em [`docs/requisitos.md`](docs/requisitos.md).
 | Jinja2 | 3.x | Templates das telas |
 | HTML5 / CSS3 | — | Interface responsiva |
 | SQLite | 3 | Banco de dados embarcado |
+| argon2-cffi | 23+ | Hash de senhas com Argon2id |
 | pytest | 8.x | Testes automatizados |
 
 ## 🏗️ Arquitetura
@@ -111,13 +112,16 @@ source .venv/bin/activate      # Windows: .venv\Scripts\activate
 # 3. Instalar as dependências
 pip install -r requirements.txt
 
-# 4. Iniciar a aplicação
+# 4. Criar o primeiro voluntário (pede nome, e-mail e senha)
+flask --app run criar-voluntario
+
+# 5. Iniciar a aplicação
 python run.py
 ```
 
-Acesse em `http://127.0.0.1:5000`.
+Acesse em `http://127.0.0.1:5000` e entre com o e-mail e a senha do voluntário criado.
 
-Para rodar os testes (13 testes cobrindo RF01 a RF05 e entradas maliciosas):
+Para rodar os testes (25 testes cobrindo RF01 a RF05, autenticação e entradas maliciosas):
 
 ```bash
 pytest
@@ -132,18 +136,27 @@ pytest
 | RF03 — Atualização do estoque | ✅ Implementado |
 | RF04 — Histórico de entregas | ✅ Implementado |
 | RF05 — Famílias aguardando | ✅ Implementado |
-| RNF01 — Autenticação (Argon2id) | ⏳ Próxima etapa |
+| RNF01 — Autenticação (Argon2id) | ✅ Implementado |
 
 ## 🖥️ Telas disponíveis
 
 | Rota | Função |
 |---|---|
+| `/login` | Entrada do voluntário (única rota pública) |
 | `/` | Início, com a quantidade de cestas em estoque |
 | `/familias/nova` | Cadastro de família (RF01) |
 | `/familias` | Lista de famílias cadastradas |
 | `/familias/<id>` | Detalhes, registro de entrega (RF02/RF03) e histórico (RF04) |
 | `/familias/aguardando` | Famílias aguardando atendimento (RF05) |
 | `/estoque` | Consulta e entrada de cestas no estoque |
+
+## 🔐 Segurança
+
+- Senhas guardadas somente como hash **Argon2id** com salt (nunca em texto limpo, MD5 ou SHA-1).
+- Todas as rotas, exceto `/login`, exigem voluntário autenticado, verificado no servidor.
+- Sessão expira após 30 minutos de inatividade; cookie `HttpOnly` e `SameSite=Lax`.
+- Consultas SQL parametrizadas e escape automático do Jinja2 contra SQL Injection e XSS.
+- Em produção, defina as variáveis `SECRET_KEY` (valor aleatório) e `SESSION_COOKIE_SECURE=1` (HTTPS).
 
 ## 📝 Padrão de commits
 

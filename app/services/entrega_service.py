@@ -1,6 +1,6 @@
 """Regras de negócio de entregas e estoque (RF02 e RF03)."""
 from app.repositories import entrega_repository, estoque_repository, familia_repository
-from app.repositories.database import get_db
+from app.repositories.database import transacao
 from app.services import ValidacaoErro
 
 
@@ -27,15 +27,10 @@ def registrar_entrega(id_familia: int, quantidade_cestas, observacao: str | None
     if quantidade_cestas > disponivel:
         raise ValidacaoErro(f"Estoque insuficiente: há {disponivel} cesta(s) disponível(is).")
 
-    db = get_db()
-    try:
+    with transacao():
         id_entrega = entrega_repository.inserir(id_familia, quantidade_cestas, (observacao or "").strip() or None)
         estoque_repository.alterar_quantidade(-quantidade_cestas)
         familia_repository.atualizar_status(id_familia, "atendida")
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return id_entrega
 
 
@@ -46,8 +41,8 @@ def historico_da_familia(id_familia: int):
 
 def adicionar_ao_estoque(quantidade) -> None:
     quantidade = _inteiro_positivo(quantidade, "A quantidade")
-    estoque_repository.alterar_quantidade(quantidade)
-    get_db().commit()
+    with transacao():
+        estoque_repository.alterar_quantidade(quantidade)
 
 
 def quantidade_em_estoque() -> int:

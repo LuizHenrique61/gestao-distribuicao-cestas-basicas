@@ -91,3 +91,22 @@ def test_entrada_com_sql_e_html_e_armazenada_como_texto(client, app):
     pagina = client.get("/familias").get_data(as_text=True)
     assert "<script>alert(1)</script>" not in pagina
     assert "&lt;script&gt;" in pagina
+
+
+# Transação: se uma etapa da entrega falhar, nada é gravado
+def test_falha_no_meio_da_entrega_desfaz_tudo(app, monkeypatch):
+    from app.repositories import familia_repository
+
+    with app.app_context():
+        id_familia = cadastrar()
+        entrega_service.adicionar_ao_estoque(5)
+
+        def falhar(*_args):
+            raise RuntimeError("falha simulada")
+
+        monkeypatch.setattr(familia_repository, "atualizar_status", falhar)
+        with pytest.raises(RuntimeError):
+            entrega_service.registrar_entrega(id_familia, 2)
+
+        assert entrega_service.quantidade_em_estoque() == 5
+        assert entrega_service.historico_da_familia(id_familia) == []

@@ -21,6 +21,16 @@ def close_db(_exc=None) -> None:
         db.close()
 
 
+def transacao():
+    """Gerenciador de contexto: confirma tudo ao final ou desfaz se houver erro.
+
+    Uso nos serviços:
+        with transacao():
+            repositorio.inserir(...)
+    """
+    return get_db()
+
+
 def init_db() -> None:
     with open(SCHEMA_PATH, encoding="utf-8") as f:
         get_db().executescript(f.read())

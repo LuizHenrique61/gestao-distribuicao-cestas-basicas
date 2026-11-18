@@ -29,3 +29,11 @@ CREATE TABLE IF NOT EXISTS estoque (
 INSERT INTO estoque (id_estoque, quantidade_disponivel)
 SELECT 1, 0
 WHERE NOT EXISTS (SELECT 1 FROM estoque WHERE id_estoque = 1);
+
+-- RNF01: voluntários com acesso ao sistema (senha somente em hash Argon2id)
+CREATE TABLE IF NOT EXISTS voluntario (
+    id_voluntario INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome          TEXT    NOT NULL,
+    email         TEXT    NOT NULL UNIQUE,
+    senha_hash    TEXT    NOT NULL
+);

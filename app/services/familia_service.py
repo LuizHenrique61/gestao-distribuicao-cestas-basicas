@@ -1,5 +1,6 @@
 """Regras de negócio do cadastro de famílias (RF01)."""
 from app.repositories import familia_repository
+from app.repositories.database import transacao
 from app.services import ValidacaoErro
 
 
@@ -19,7 +20,8 @@ def cadastrar_familia(nome_responsavel: str, quantidade_membros, telefone: str, 
     if quantidade_membros <= 0:
         raise ValidacaoErro("A quantidade de membros deve ser maior que zero.")
 
-    return familia_repository.inserir(nome_responsavel, quantidade_membros, telefone, endereco)
+    with transacao():
+        return familia_repository.inserir(nome_responsavel, quantidade_membros, telefone, endereco)
 
 
 def listar_familias(status: str | None = None):

@@ -3,13 +3,11 @@ from app.repositories.database import get_db
 
 
 def inserir(nome_responsavel: str, quantidade_membros: int, telefone: str | None, endereco: str) -> int:
-    db = get_db()
-    cursor = db.execute(
+    cursor = get_db().execute(
         "INSERT INTO familia (nome_responsavel, quantidade_membros, telefone, endereco) "
         "VALUES (?, ?, ?, ?)",
         (nome_responsavel, quantidade_membros, telefone, endereco),
     )
-    db.commit()
     return cursor.lastrowid
 
 
