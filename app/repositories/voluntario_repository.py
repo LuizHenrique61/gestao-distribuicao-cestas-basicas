@@ -3,12 +3,10 @@ from app.repositories.database import get_db
 
 
 def inserir(nome: str, email: str, senha_hash: str) -> int:
-    db = get_db()
-    cursor = db.execute(
+    cursor = get_db().execute(
         "INSERT INTO voluntario (nome, email, senha_hash) VALUES (?, ?, ?)",
         (nome, email, senha_hash),
     )
-    db.commit()
     return cursor.lastrowid
 
 
@@ -17,6 +15,4 @@ def buscar_por_email(email: str):
 
 
 def atualizar_hash(id_voluntario: int, senha_hash: str) -> None:
-    db = get_db()
-    db.execute("UPDATE voluntario SET senha_hash = ? WHERE id_voluntario = ?", (senha_hash, id_voluntario))
-    db.commit()
+    get_db().execute("UPDATE voluntario SET senha_hash = ? WHERE id_voluntario = ?", (senha_hash, id_voluntario))

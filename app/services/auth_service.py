@@ -8,6 +8,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 
 from app.repositories import voluntario_repository
+from app.repositories.database import transacao
 from app.services import ValidacaoErro
 
 _hasher = PasswordHasher()  # Argon2id com parâmetros recomendados pela biblioteca
@@ -29,7 +30,8 @@ def criar_voluntario(nome: str, email: str, senha: str) -> int:
         raise ValidacaoErro(f"A senha deve ter pelo menos {TAMANHO_MINIMO_SENHA} caracteres.")
     if voluntario_repository.buscar_por_email(email) is not None:
         raise ValidacaoErro("Já existe um voluntário com este e-mail.")
-    return voluntario_repository.inserir(nome, email, _hasher.hash(senha))
+    with transacao():
+        return voluntario_repository.inserir(nome, email, _hasher.hash(senha))
 
 
 def autenticar(email: str, senha: str):
@@ -47,5 +49,6 @@ def autenticar(email: str, senha: str):
         raise ValidacaoErro(MENSAGEM_LOGIN_INVALIDO)
 
     if _hasher.check_needs_rehash(voluntario["senha_hash"]):
-        voluntario_repository.atualizar_hash(voluntario["id_voluntario"], _hasher.hash(senha))
+        with transacao():
+            voluntario_repository.atualizar_hash(voluntario["id_voluntario"], _hasher.hash(senha))
     return voluntario
