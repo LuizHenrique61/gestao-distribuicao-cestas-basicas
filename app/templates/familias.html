@@ -10,7 +10,7 @@
   <tbody>
     {% for f in familias %}
     <tr>
-      <td>{{ f.nome_responsavel }}</td>
+      <td><a href="{{ url_for('main.detalhe_familia', id_familia=f.id_familia) }}">{{ f.nome_responsavel }}</a></td>
       <td>{{ f.quantidade_membros }}</td>
       <td>{{ f.telefone or '—' }}</td>
       <td>{{ f.status }}</td>

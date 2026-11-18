@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ familia.nome_responsavel }}</h2>
+<p>
+  Pessoas na residência: {{ familia.quantidade_membros }}<br>
+  Telefone: {{ familia.telefone or '—' }}<br>
+  Endereço: {{ familia.endereco }}<br>
+  Situação: <strong>{{ familia.status }}</strong>
+</p>
+
+<h3>Registrar entrega</h3>
+<p>Cestas disponíveis no estoque: <strong>{{ estoque }}</strong></p>
+<form method="post" action="{{ url_for('main.registrar_entrega', id_familia=familia.id_familia) }}" class="formulario">
+  <label for="quantidade_cestas">Quantidade de cestas *</label>
+  <input id="quantidade_cestas" name="quantidade_cestas" type="number" min="1" value="1" required>
+
+  <label for="observacao">Observação</label>
+  <input id="observacao" name="observacao">
+
+  <button type="submit" class="botao">Registrar entrega</button>
+</form>
+{% endblock %}

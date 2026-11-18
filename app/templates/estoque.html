@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Estoque de cestas</h2>
+<p class="destaque">Cestas disponíveis: <strong>{{ quantidade }}</strong></p>
+
+<h3>Registrar entrada de cestas</h3>
+<form method="post" class="formulario">
+  <label for="quantidade">Quantidade recebida *</label>
+  <input id="quantidade" name="quantidade" type="number" min="1" required>
+  <button type="submit" class="botao">Adicionar ao estoque</button>
+</form>
+{% endblock %}
