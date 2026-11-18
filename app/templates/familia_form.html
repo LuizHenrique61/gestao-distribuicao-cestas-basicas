@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Cadastrar família</h2>
+<form method="post" class="formulario">
+  <label for="nome_responsavel">Nome do responsável *</label>
+  <input id="nome_responsavel" name="nome_responsavel" required value="{{ dados.get('nome_responsavel', '') }}">
+
+  <label for="quantidade_membros">Pessoas na residência *</label>
+  <input id="quantidade_membros" name="quantidade_membros" type="number" min="1" required value="{{ dados.get('quantidade_membros', '') }}">
+
+  <label for="telefone">Telefone</label>
+  <input id="telefone" name="telefone" type="tel" value="{{ dados.get('telefone', '') }}">
+
+  <label for="endereco">Endereço *</label>
+  <input id="endereco" name="endereco" required value="{{ dados.get('endereco', '') }}">
+
+  <button type="submit" class="botao">Salvar</button>
+</form>
+{% endblock %}

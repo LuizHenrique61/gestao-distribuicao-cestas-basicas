@@ -13,6 +13,7 @@ header {
 }
 
 header h1 { margin: 0; font-size: 1.5rem; }
+header h1 a { color: #fff; text-decoration: none; }
 header p  { margin: 0.25rem 0 0; }
 
 main {
@@ -21,5 +22,28 @@ main {
   padding: 0 1rem;
 }
 
+.menu { list-style: none; padding: 0; }
 .menu li { margin: 0.75rem 0; }
-.em-breve { color: #6b7280; font-size: 0.9rem; }
+
+.botao {
+  display: inline-block;
+  background: #2f6b3a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.formulario { display: flex; flex-direction: column; gap: 0.4rem; }
+.formulario input, .formulario textarea { font-size: 1rem; padding: 0.5rem; }
+.formulario button { margin-top: 0.8rem; align-self: flex-start; }
+
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #ddd; }
+
+.alerta { padding: 0.75rem; border-radius: 6px; }
+.alerta-sucesso { background: #dff3e3; color: #1d5a2b; }
+.alerta-erro { background: #fde2e1; color: #8a1c17; }

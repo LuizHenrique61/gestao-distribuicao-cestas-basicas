@@ -5,10 +5,8 @@
   <h2>Bem-vindo(a)</h2>
   <p>Escolha uma opção:</p>
   <ul class="menu">
-    <li>Cadastrar família <span class="em-breve">(em breve)</span></li>
-    <li>Registrar entrega <span class="em-breve">(em breve)</span></li>
-    <li>Estoque de cestas <span class="em-breve">(em breve)</span></li>
-    <li>Famílias aguardando <span class="em-breve">(em breve)</span></li>
+    <li><a class="botao" href="{{ url_for('main.nova_familia') }}">Cadastrar família</a></li>
+    <li><a class="botao" href="{{ url_for('main.listar_familias') }}">Famílias cadastradas</a></li>
   </ul>
 </section>
 {% endblock %}

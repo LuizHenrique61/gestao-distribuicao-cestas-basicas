@@ -8,10 +8,13 @@
 </head>
 <body>
   <header>
-    <h1>Gestão de Cestas Básicas</h1>
+    <h1><a href="{{ url_for('main.index') }}">Gestão de Cestas Básicas</a></h1>
     <p>Programa Mãos Abertas — Remar Brasil</p>
   </header>
   <main>
+    {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
+      <p class="alerta alerta-{{ categoria }}" role="alert">{{ mensagem }}</p>
+    {% endfor %}
     {% block content %}{% endblock %}
   </main>
 </body>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+{% if familias %}
+<table>
+  <thead>
+    <tr><th>Responsável</th><th>Pessoas</th><th>Telefone</th><th>Situação</th></tr>
+  </thead>
+  <tbody>
+    {% for f in familias %}
+    <tr>
+      <td>{{ f.nome_responsavel }}</td>
+      <td>{{ f.quantidade_membros }}</td>
+      <td>{{ f.telefone or '—' }}</td>
+      <td>{{ f.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Nenhuma família encontrada.</p>
+{% endif %}
+<p><a class="botao" href="{{ url_for('main.nova_familia') }}">Cadastrar família</a></p>
+{% endblock %}
