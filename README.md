@@ -63,8 +63,10 @@ Interface (templates + rotas)  →  Regras de negócio (services)  →  Dados (r
 ```
 
 - **Apresentação** (`app/routes.py`, `app/templates/`, `app/static/`): telas e formulários usados pelos voluntários.
-- **Aplicação** (`app/services/`): validações e regras, como impedir entrega sem estoque suficiente.
-- **Dados** (`app/repositories/`, `database/schema.sql`): leitura e gravação no SQLite.
+- **Aplicação** (`app/services/familia_service.py`, `app/services/entrega_service.py`): validações e regras, como impedir entrega sem estoque suficiente.
+- **Dados** (`app/repositories/*_repository.py`, `database/schema.sql`): leitura e gravação no SQLite com consultas parametrizadas.
+
+Fluxo principal (registrar entrega): o voluntário envia o formulário → `entrega_service` verifica se a família existe e se há estoque → grava a entrega, dá baixa no estoque e marca a família como atendida em uma única transação → a tela mostra a confirmação e o histórico atualizado.
 
 ## 📁 Estrutura do repositório
 
@@ -115,7 +117,7 @@ python run.py
 
 Acesse em `http://127.0.0.1:5000`.
 
-Para rodar os testes:
+Para rodar os testes (13 testes cobrindo RF01 a RF05 e entradas maliciosas):
 
 ```bash
 pytest
@@ -123,7 +125,34 @@ pytest
 
 ## 🚧 Status
 
-Em desenvolvimento: estrutura inicial do projeto criada. As funcionalidades serão implementadas de forma incremental, na ordem RF01 → RF02 → RF03 → RF04 → RF05.
+| Requisito | Situação |
+|---|---|
+| RF01 — Cadastro de famílias | ✅ Implementado |
+| RF02 — Registro de entregas | ✅ Implementado |
+| RF03 — Atualização do estoque | ✅ Implementado |
+| RF04 — Histórico de entregas | ✅ Implementado |
+| RF05 — Famílias aguardando | ✅ Implementado |
+| RNF01 — Autenticação (Argon2id) | ⏳ Próxima etapa |
+
+## 🖥️ Telas disponíveis
+
+| Rota | Função |
+|---|---|
+| `/` | Início, com a quantidade de cestas em estoque |
+| `/familias/nova` | Cadastro de família (RF01) |
+| `/familias` | Lista de famílias cadastradas |
+| `/familias/<id>` | Detalhes, registro de entrega (RF02/RF03) e histórico (RF04) |
+| `/familias/aguardando` | Famílias aguardando atendimento (RF05) |
+| `/estoque` | Consulta e entrada de cestas no estoque |
+
+## 📝 Padrão de commits
+
+Este repositório segue mensagens semânticas:
+
+- `feat:` nova funcionalidade
+- `fix:` correção de erro
+- `test:` criação ou ajuste de testes
+- `docs:` documentação
 
 ## 👤 Autor
 
