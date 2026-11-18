@@ -17,6 +17,16 @@ def listar_familias():
     return render_template("familias.html", familias=familia_service.listar_familias(), titulo="Famílias cadastradas")
 
 
+# RF05 - famílias aguardando atendimento
+@bp.route("/familias/aguardando")
+def familias_aguardando():
+    return render_template(
+        "familias.html",
+        familias=familia_service.listar_familias(status="aguardando"),
+        titulo="Famílias aguardando atendimento",
+    )
+
+
 @bp.route("/familias/nova", methods=["GET", "POST"])
 def nova_familia():
     if request.method == "POST":

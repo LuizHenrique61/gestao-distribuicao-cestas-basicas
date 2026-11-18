@@ -6,6 +6,7 @@
   <p class="destaque">Cestas disponíveis no estoque: <strong>{{ estoque }}</strong></p>
   <ul class="menu">
     <li><a class="botao" href="{{ url_for('main.nova_familia') }}">Cadastrar família</a></li>
+    <li><a class="botao" href="{{ url_for('main.familias_aguardando') }}">Famílias aguardando atendimento</a></li>
     <li><a class="botao" href="{{ url_for('main.listar_familias') }}">Famílias cadastradas</a></li>
     <li><a class="botao" href="{{ url_for('main.estoque') }}">Estoque de cestas</a></li>
   </ul>
