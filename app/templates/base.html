@@ -5,8 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Gestão de Cestas Básicas{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/acessibilidade.js') }}" defer></script>
 </head>
 <body>
+  <a href="#conteudo" class="pular-link">Pular para o conteúdo</a>
+
+  <nav class="barra-acessibilidade" aria-label="Opções de acessibilidade">
+    <button type="button" data-a11y="contraste" aria-pressed="false">◐ Alto contraste</button>
+    <button type="button" data-a11y="fonte" aria-pressed="false">A+ Aumentar fonte</button>
+  </nav>
+
   <header>
     <h1><a href="{{ url_for('main.index') }}">Gestão de Cestas Básicas</a></h1>
     <p>Programa Mãos Abertas — Remar Brasil</p>
@@ -17,10 +25,12 @@
     </form>
     {% endif %}
   </header>
-  <main>
-    {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
-      <p class="alerta alerta-{{ categoria }}" role="alert">{{ mensagem }}</p>
-    {% endfor %}
+  <main id="conteudo" tabindex="-1">
+    <div aria-live="polite">
+      {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
+        <p class="alerta alerta-{{ categoria }}" role="{{ 'alert' if categoria == 'erro' else 'status' }}">{{ mensagem }}</p>
+      {% endfor %}
+    </div>
     {% block content %}{% endblock %}
   </main>
 </body>
