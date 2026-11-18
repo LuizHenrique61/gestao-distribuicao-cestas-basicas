@@ -39,7 +39,12 @@ def detalhe_familia(id_familia):
     familia = familia_service.buscar_familia(id_familia)
     if familia is None:
         abort(404)
-    return render_template("familia_detalhe.html", familia=familia, estoque=entrega_service.quantidade_em_estoque())
+    return render_template(
+        "familia_detalhe.html",
+        familia=familia,
+        estoque=entrega_service.quantidade_em_estoque(),
+        entregas=entrega_service.historico_da_familia(id_familia),  # RF04
+    )
 
 
 # RF02 e RF03 - registro de entrega com baixa no estoque

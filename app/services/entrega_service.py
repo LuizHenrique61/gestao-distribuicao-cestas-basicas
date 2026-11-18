@@ -39,6 +39,11 @@ def registrar_entrega(id_familia: int, quantidade_cestas, observacao: str | None
     return id_entrega
 
 
+def historico_da_familia(id_familia: int):
+    """RF04: retorna somente as entregas vinculadas à família informada."""
+    return entrega_repository.listar_por_familia(id_familia)
+
+
 def adicionar_ao_estoque(quantidade) -> None:
     quantidade = _inteiro_positivo(quantidade, "A quantidade")
     estoque_repository.alterar_quantidade(quantidade)

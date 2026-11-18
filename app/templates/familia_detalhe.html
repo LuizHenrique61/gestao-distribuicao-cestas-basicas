@@ -20,4 +20,24 @@
 
   <button type="submit" class="botao">Registrar entrega</button>
 </form>
+
+<h3>Histórico de entregas</h3>
+{% if entregas %}
+<table>
+  <thead>
+    <tr><th>Data</th><th>Cestas</th><th>Observação</th></tr>
+  </thead>
+  <tbody>
+    {% for e in entregas %}
+    <tr>
+      <td>{{ e.data_entrega }}</td>
+      <td>{{ e.quantidade_cestas }}</td>
+      <td>{{ e.observacao or '—' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Esta família ainda não recebeu cestas.</p>
+{% endif %}
 {% endblock %}
