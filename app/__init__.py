@@ -1,5 +1,6 @@
 """Criação e configuração da aplicação Flask."""
 import os
+import secrets
 from datetime import timedelta
 
 import click
@@ -9,7 +10,9 @@ from flask import Flask
 def create_app(config: dict | None = None) -> Flask:
     app = Flask(__name__)
     app.config.update(
-        SECRET_KEY=os.environ.get("SECRET_KEY", "dev-alterar-em-producao"),
+        # Sem SECRET_KEY definida, gera uma chave aleatória a cada execução:
+        # nunca usamos uma chave fixa publicada no repositório.
+        SECRET_KEY=os.environ.get("SECRET_KEY") or secrets.token_hex(32),
         DATABASE=os.path.join(app.root_path, "..", "cestas.db"),
         # RNF01: sessão expira após 30 minutos de inatividade
         PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),
